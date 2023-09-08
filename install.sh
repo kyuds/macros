@@ -12,5 +12,6 @@ done
 
 echo "Adding 'scripts' directory to PATH..."
 echo "export PATH=~/scripts:\$PATH" >> ~/.zprofile
+source ~/.zprofile
 echo "Done installation."
 
