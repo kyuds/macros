@@ -21,7 +21,15 @@ elif [ "$CMD" == "sign" ]; then
     jarsigner -keystore ~/apk.keystore $APK apk
 elif [ "$CMD" == "reinstall" ]; then
     apktool b $APK
-    sign $APK/dist/$APK.apk
+    if [ -f "~/apk.keystore" ]; then
+        echo "Using previously generated keystore"
+    else
+        echo "Generating ~/apk.keystore"
+        pushd ~ > /dev/null 2>&1
+        keytool -genkey -v -keystore apk.keystore -alias apk -keyalg RSA -keysize 2048 -validity 10000
+        popd > /dev/null 2>&1
+    fi
+    jarsigner -keystore ~/apk.keystore $APK apk
     adb install $APK/dist/$APK.apk
 else
     echo "Command doesn't exist"
